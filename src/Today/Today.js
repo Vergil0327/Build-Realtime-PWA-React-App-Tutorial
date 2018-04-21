@@ -22,6 +22,12 @@ export default class Today extends Component {
     // Subscribe to the 'coin-prices' channel
     this.prices = this.pusher.subscribe('coin-prices');
 
+    // The code below is only executed when the browser is offline.
+    if (!navigator.onLine) {
+      this.setState({ btcPrice: localStorage.getItem('BTC') });
+      this.setState({ ethPrice: localStorage.getItem('ETH') });
+      this.setState({ ltcPrice: localStorage.getItem('LTC') });
+    }
     setInterval(() => {
       axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=USD')
         .then(response => this.sendPricePusher(response.data))
@@ -42,6 +48,9 @@ export default class Today extends Component {
           ethPrice: data.ETH.USD,
           ltcPrice: data.LTC.USD,
         });
+        localStorage.setItem('BTC', data.BTC.USD);
+        localStorage.setItem('ETH', data.ETH.USD);
+        localStorage.setItem('LTC', data.LTC.USD);
       })
       .catch(console.log);
   }

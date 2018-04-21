@@ -13,6 +13,13 @@ export default class History extends Component {
   }
 
   componentDidMount() {
+      if (!navigator.onLine) {
+          this.setState({ todayPrice: JSON.parse(localStorage.getItem('todayPrice')) });
+          this.setState({ yesterdayPrice: JSON.parse(localStorage.getItem('yesterdayPrice')) });
+          this.setState({ twoDaysPrice: JSON.parse(localStorage.getItem('twoDaysPrice')) });
+          this.setState({ threeDaysPrice: JSON.parse(localStorage.getItem('threeDaysPrice')) });
+          this.setState({ fourDaysPrice: JSON.parse(localStorage.getItem('fourDaysPrice')) });
+      }
     this.getTodayPrice();
     this.getYesterdayPrice();
     this.getTwoDaysPrice();
@@ -38,6 +45,8 @@ export default class History extends Component {
           ltc: ltc.data.LTC.USD,
         }
 
+        //  storing the values gotten from the API request to the localStorage.
+        localStorage.setItem('todayPrice', JSON.stringify(todayPrice));
         this.setState({ todayPrice })
       }))
   }
@@ -53,6 +62,7 @@ export default class History extends Component {
           ltc: ltc.data.LTC.USD,
         }
 
+        localStorage.setItem('yesterdayPrice', JSON.stringify(yesterdayPrice));
         this.setState({ yesterdayPrice })
       }))
   }
@@ -68,6 +78,7 @@ export default class History extends Component {
           ltc: ltc.data.LTC.USD,
         }
 
+        localStorage.setItem('twoDaysPrice', JSON.stringify(twoDaysPrice));
         this.setState({ twoDaysPrice })
       }))
   }
@@ -83,6 +94,7 @@ export default class History extends Component {
           ltc: ltc.data.LTC.USD,
         }
 
+        localStorage.setItem('threeDaysPrice', JSON.stringify(threeDaysPrice));
         this.setState({ threeDaysPrice })
       }))
   }
@@ -99,6 +111,7 @@ export default class History extends Component {
           ltc: ltc.data.LTC.USD,
         }
 
+        localStorage.setItem('fourDaysPrice', JSON.stringify(fourDaysPrice));
         this.setState({ fourDaysPrice })
       }))
   }
